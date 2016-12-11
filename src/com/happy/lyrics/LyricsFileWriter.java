@@ -43,18 +43,6 @@ public abstract class LyricsFileWriter {
 	public abstract void writer(LyricsInfo lyricsIfno, String lyricsFilePath)
 			throws Exception;
 
-	/**
-	 * 获取要保存到歌词文件的文件内容
-	 * 
-	 * @param lyricsIfno
-	 *            歌词数据
-	 * @param lyricsFilePath
-	 *            歌词文件的路径
-	 * @throws Exception
-	 */
-	public abstract String parseLyricsInfo(LyricsInfo lyricsIfno)
-			throws Exception;
-
 	public static void setDefaultCharset(Charset charset) {
 		defaultCharset = charset;
 	}

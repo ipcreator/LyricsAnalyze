@@ -50,8 +50,7 @@ public class HrcLyricsFileWriter extends LyricsFileWriter {
 		setDefaultCharset(Charset.forName("GB2312"));
 	}
 
-	@Override
-	public String parseLyricsInfo(LyricsInfo lyricsIfno) throws Exception {
+	private String parseLyricsInfo(LyricsInfo lyricsIfno) throws Exception {
 		String lyricsCom = "";
 		// 先保存所有的标签数据
 		Map<String, Object> tags = lyricsIfno.getLyricsTags();
