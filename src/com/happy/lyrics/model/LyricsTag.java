@@ -19,4 +19,8 @@ public class LyricsTag {
 	 * 时间补偿值
 	 */
 	public static String TAG_OFFSET = "com.lyrics.tag.offset";
+	/**
+	 * 上传者
+	 */
+	public static String TAG_BY = "com.lyrics.tag.by";
 }
