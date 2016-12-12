@@ -43,6 +43,11 @@ public class KscLyricsFileReader extends LyricsFileReader {
 	 */
 	public final static String LEGAL_LYRICS_LINE_PREFIX = "karaoke.add";
 
+	/**
+	 * 歌词Tag
+	 */
+	public final static String LEGAL_TAG_PREFIX = "karaoke.tag";
+
 	public KscLyricsFileReader() {
 		// 设置编码
 		setDefaultCharset(Charset.forName("GB2312"));
@@ -113,6 +118,10 @@ public class KscLyricsFileReader extends LyricsFileReader {
 			// karaoke.offset :='0';
 			String temp[] = lineInfo.split("\'");
 			lyricsTags.put(LyricsTag.TAG_OFFSET, temp[1]);
+		} else if (lineInfo.startsWith(LEGAL_TAG_PREFIX)) {
+			// 自定义标签
+			String temp[] = lineInfo.split("\'")[1].split(":");
+			lyricsTags.put(temp[0], temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_LYRICS_LINE_PREFIX)) {
 			lyricsLineInfo = new LyricsLineInfo();
 

@@ -40,6 +40,11 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 	 */
 	public final static String LEGAL_LYRICS_LINE_PREFIX = "karaoke.add";
 
+	/**
+	 * 歌词Tag
+	 */
+	public final static String LEGAL_TAG_PREFIX = "karaoke.tag";
+
 	public KscLyricsFileWriter() {
 		// 设置编码
 		setDefaultCharset(Charset.forName("GB2312"));
@@ -50,6 +55,7 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 		// 先保存所有的标签数据
 		Map<String, Object> tags = lyricsIfno.getLyricsTags();
 		for (Map.Entry<String, Object> entry : tags.entrySet()) {
+			Object val = entry.getValue();
 			if (entry.getKey().equals(LyricsTag.TAG_SONGNAME)) {
 				lyricsCom += LEGAL_SONGNAME_PREFIX;
 			} else if (entry.getKey().equals(LyricsTag.TAG_SINGER)) {
@@ -57,9 +63,10 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 			} else if (entry.getKey().equals(LyricsTag.TAG_OFFSET)) {
 				lyricsCom += LEGAL_OFFSET_PREFIX;
 			} else {
-				continue;
+				lyricsCom += LEGAL_TAG_PREFIX;
+				val = entry.getKey() + ":" + val;
 			}
-			lyricsCom += " := '" + entry.getValue() + "';\n";
+			lyricsCom += " := '" + val + "';\n";
 		}
 		// 每行歌词内容
 		TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = lyricsIfno

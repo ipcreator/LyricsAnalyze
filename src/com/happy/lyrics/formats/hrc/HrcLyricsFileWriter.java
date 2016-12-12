@@ -63,6 +63,7 @@ public class HrcLyricsFileWriter extends LyricsFileWriter {
 			} else if (entry.getKey().equals(LyricsTag.TAG_OFFSET)) {
 				lyricsCom += LEGAL_OFFSET_PREFIX;
 			} else {
+				lyricsCom += LEGAL_TAG_PREFIX;
 				val = entry.getKey() + ":" + val;
 			}
 			lyricsCom += " := '" + val + "';\n";
