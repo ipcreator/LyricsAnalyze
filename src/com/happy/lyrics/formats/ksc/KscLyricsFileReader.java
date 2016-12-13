@@ -106,16 +106,13 @@ public class KscLyricsFileReader extends LyricsFileReader {
 			String lineInfo) {
 		LyricsLineInfo lyricsLineInfo = null;
 		if (lineInfo.startsWith(LEGAL_SONGNAME_PREFIX)) {
-			// karaoke.songname :='爱就一个字';
 			String temp[] = lineInfo.split("\'");
 			//
 			lyricsTags.put(LyricsTag.TAG_SONGNAME, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_SINGERNAME_PREFIX)) {
-			// karaoke.singer :='张信哲';
 			String temp[] = lineInfo.split("\'");
 			lyricsTags.put(LyricsTag.TAG_SINGER, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_OFFSET_PREFIX)) {
-			// karaoke.offset :='0';
 			String temp[] = lineInfo.split("\'");
 			lyricsTags.put(LyricsTag.TAG_OFFSET, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_TAG_PREFIX)) {

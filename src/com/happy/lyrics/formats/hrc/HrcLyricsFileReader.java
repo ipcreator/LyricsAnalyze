@@ -107,16 +107,13 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			SortedMap<Integer, LyricsLineInfo> lyricsLineInfos,
 			Map<String, Object> lyricsTags, String lineInfo) {
 		if (lineInfo.startsWith(LEGAL_SONGNAME_PREFIX)) {
-			// karaoke.songname :='爱就一个字';
 			String temp[] = lineInfo.split("\'");
 			//
 			lyricsTags.put(LyricsTag.TAG_SONGNAME, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_SINGERNAME_PREFIX)) {
-			// karaoke.singer :='张信哲';
 			String temp[] = lineInfo.split("\'");
 			lyricsTags.put(LyricsTag.TAG_SINGER, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_OFFSET_PREFIX)) {
-			// karaoke.offset :='0';
 			String temp[] = lineInfo.split("\'");
 			lyricsTags.put(LyricsTag.TAG_OFFSET, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_TAG_PREFIX)) {
@@ -128,11 +125,6 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			int right = lineInfo.length();
 			String[] lineComments = lineInfo.substring(left + 1, right - 3)
 					.split("'\\s*,|\\s*'", -1);
-			// haplayer.lrc('<00:50.747,00:56.916><02:15.866,02:21.442>',
-			// '这个世界随时都要崩塌',
-			// '266:445:784:901:395:337:333:624:727:1357,
-			// 257:328:834:830:382:447:348:825:634:691');
-
 			// 歌词
 			String lineLyricsStr = lineComments[2];
 			List<String> lineLyricsList = getLyricsWords(lineLyricsStr);
