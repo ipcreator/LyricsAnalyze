@@ -76,8 +76,13 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			SortedMap<Integer, LyricsLineInfo> lyricsLineInfosTemp = new TreeMap<Integer, LyricsLineInfo>();
 			Map<String, Object> lyricsTags = new HashMap<String, Object>();
 			for (int i = 0; i < lyricsTexts.length; i++) {
-				// 解析歌词
-				parserLineInfos(lyricsLineInfosTemp, lyricsTags, lyricsTexts[i]);
+				try {
+					// 解析歌词
+					parserLineInfos(lyricsLineInfosTemp, lyricsTags,
+							lyricsTexts[i]);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			in.close();
 			// 重新封装
@@ -124,9 +129,9 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			int left = LEGAL_LYRICS_LINE_PREFIX.length() + 1;
 			int right = lineInfo.length();
 			String[] lineComments = lineInfo.substring(left + 1, right - 3)
-					.split("'\\s*,|\\s*'", -1);
+					.split("'\\s*,\\s*'", -1);
 			// 歌词
-			String lineLyricsStr = lineComments[2];
+			String lineLyricsStr = lineComments[1];
 			List<String> lineLyricsList = getLyricsWords(lineLyricsStr);
 
 			// 歌词分隔
@@ -144,7 +149,7 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			String[] timeTexts = timeText.split("><");
 
 			// 每个歌词的时间标签
-			String wordsDisIntervalText = lineComments[4];
+			String wordsDisIntervalText = lineComments[2];
 			String[] wordsDisIntervalTexts = wordsDisIntervalText.split(",");
 
 			parserLineInfos(lyricsLineInfos, lyricsWords, lineLyrics,

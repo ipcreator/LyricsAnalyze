@@ -111,8 +111,6 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 			char c = lrcComTxt.charAt(i);
 			if (CharUtils.isChinese(c)) {
 				lrcStack.push(String.valueOf(c));
-			} else if (CharUtils.isWord(c)) {
-				temp += String.valueOf(c);
 			} else if (Character.isSpaceChar(c)) {
 				if (!temp.equals("")) {
 					lrcStack.push(temp);
@@ -123,13 +121,10 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 					lrcStack.push("[" + tw + " " + "]");
 				}
 			} else {
-				if (!temp.equals("")) {
-					lrcStack.push(temp);
-					temp = "";
-				}
-				lrcStack.push(String.valueOf(c));
+				temp += String.valueOf(c);
 			}
 		}
+		//
 		if (!temp.equals("")) {
 			lrcStack.push("[" + temp + "]");
 			temp = "";
@@ -156,21 +151,29 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 	}
 
 	@Override
-	public void writer(LyricsInfo lyricsIfno, String lyricsFilePath)
+	public boolean writer(LyricsInfo lyricsIfno, String lyricsFilePath)
 			throws Exception {
-		File lyricsFile = new File(lyricsFilePath);
-		if (lyricsFile != null) {
-			//
-			if (!lyricsFile.getParentFile().exists()) {
-				lyricsFile.getParentFile().mkdirs();
+		try {
+
+			File lyricsFile = new File(lyricsFilePath);
+			if (lyricsFile != null) {
+				//
+				if (!lyricsFile.getParentFile().exists()) {
+					lyricsFile.getParentFile().mkdirs();
+				}
+				String content = parseLyricsInfo(lyricsIfno);
+				OutputStreamWriter outstream = new OutputStreamWriter(
+						new FileOutputStream(lyricsFilePath),
+						getDefaultCharset());
+				PrintWriter writer = new PrintWriter(outstream);
+				writer.write(content);
+				writer.close();
 			}
-			String content = parseLyricsInfo(lyricsIfno);
-			OutputStreamWriter outstream = new OutputStreamWriter(
-					new FileOutputStream(lyricsFilePath), getDefaultCharset());
-			PrintWriter writer = new PrintWriter(outstream);
-			writer.write(content);
-			writer.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return false;
 	}
 
 	@Override

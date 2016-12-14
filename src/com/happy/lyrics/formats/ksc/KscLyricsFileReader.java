@@ -73,13 +73,20 @@ public class KscLyricsFileReader extends LyricsFileReader {
 			int index = 0;
 			String lineInfo = "";
 			while ((lineInfo = br.readLine()) != null) {
-				// 行读取，并解析每行歌词的内容
-				LyricsLineInfo lyricsLineInfo = parserLineInfos(lyricsTags,
-						lineInfo);
-				if (lyricsLineInfo != null) {
-					lyricsLineInfos.put(index, lyricsLineInfo);
-					index++;
+
+				try {
+					// 行读取，并解析每行歌词的内容
+					LyricsLineInfo lyricsLineInfo = parserLineInfos(lyricsTags,
+							lineInfo);
+					if (lyricsLineInfo != null) {
+						lyricsLineInfos.put(index, lyricsLineInfo);
+						index++;
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+
 			}
 			in.close();
 
@@ -125,7 +132,7 @@ public class KscLyricsFileReader extends LyricsFileReader {
 			int left = LEGAL_LYRICS_LINE_PREFIX.length() + 1;
 			int right = lineInfo.length();
 			String[] lineComments = lineInfo.substring(left + 1, right - 3)
-					.split("'\\s*,|\\s*'", -1);
+					.split("'\\s*,\\s*'", -1);
 			// 开始时间
 			String startTimeStr = lineComments[0];
 			lyricsLineInfo.setStartTimeStr(startTimeStr);
@@ -133,13 +140,13 @@ public class KscLyricsFileReader extends LyricsFileReader {
 			lyricsLineInfo.setStartTime(startTime);
 
 			// 结束时间
-			String endTimeStr = lineComments[2];
+			String endTimeStr = lineComments[1];
 			lyricsLineInfo.setEndTimeStr(endTimeStr);
 			int endTime = TimeUtils.parseInteger(endTimeStr);
 			lyricsLineInfo.setEndTime(endTime);
 
 			// 歌词
-			String lineLyricsStr = lineComments[4];
+			String lineLyricsStr = lineComments[2];
 			List<String> lineLyricsList = getLyricsWords(lineLyricsStr);
 
 			// 歌词分隔
@@ -152,7 +159,7 @@ public class KscLyricsFileReader extends LyricsFileReader {
 			lyricsLineInfo.setLineLyrics(lineLyrics);
 
 			// 获取每个歌词的时间
-			List<String> wordsDisIntervalList = getWordsDisIntervalList(lineComments[6]);
+			List<String> wordsDisIntervalList = getWordsDisIntervalList(lineComments[3]);
 			int wordsDisInterval[] = getWordsDisIntervalList(wordsDisIntervalList);
 			lyricsLineInfo.setWordsDisInterval(wordsDisInterval);
 		}

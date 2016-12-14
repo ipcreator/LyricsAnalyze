@@ -40,7 +40,7 @@ public abstract class LyricsFileWriter {
 	 * @param lyricsFilePath
 	 *            歌词文件路径
 	 */
-	public abstract void writer(LyricsInfo lyricsIfno, String lyricsFilePath)
+	public abstract boolean writer(LyricsInfo lyricsIfno, String lyricsFilePath)
 			throws Exception;
 
 	public static void setDefaultCharset(Charset charset) {

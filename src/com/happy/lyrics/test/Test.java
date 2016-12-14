@@ -14,11 +14,10 @@ import com.happy.lyrics.system.LyricsInfoIO;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		// File lyricsfile = new
-		// File("haplayer/lyrics/蔡健雅 - Beautiful Love.ksc");
+		File lyricsfile = new File("haplayer/lyrics/HELLO(王杰).hrc");
 		// File lyricsfile = new
 		// File("haplayer/lyrics/蔡健雅 - Beautiful Love2.hrc");
-		File lyricsfile = new File("haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
+		// File lyricsfile = new File("haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
 
 		LyricsFileReader lyricsFileReader = LyricsInfoIO
 				.getLyricsFileReader(lyricsfile);
@@ -36,11 +35,12 @@ public class Test {
 		// System.out.println(lyricsLineInfo.getLineLyrics());
 		// }
 
-//		lyricsIfno.getLyricsTags().put(LyricsTag.TAG_BY, "zhangliangming");
-//		LyricsFileWriter lyricsFileWriter = LyricsInfoIO
-//				.getLyricsFileWriter("haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
-//
-//		lyricsFileWriter.writer(lyricsIfno, "haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
+//		 lyricsIfno.getLyricsTags().put(LyricsTag.TAG_BY, "zhangliangming");
+//		 LyricsFileWriter lyricsFileWriter = LyricsInfoIO
+//		 .getLyricsFileWriter("haplayer/lyrics/HELLO(王杰).hrc");
+//		//
+//		 lyricsFileWriter.writer(lyricsIfno,
+//		 "haplayer/lyrics/HELLO(王杰).hrc");
 
 		// System.out.println(ZipUtil.compress(lyricsFileWriter.parseLyricsInfo(lyricsIfno)));
 	}
