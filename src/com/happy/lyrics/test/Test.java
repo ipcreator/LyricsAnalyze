@@ -19,9 +19,9 @@ public class Test {
 		// File("haplayer/lyrics/蔡健雅 - Beautiful Love2.hrc");
 		// File lyricsfile = new File("haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
 
-		LyricsFileReader lyricsFileReader = LyricsInfoIO
-				.getLyricsFileReader(lyricsfile);
-		LyricsInfo lyricsIfno = lyricsFileReader.readFile(lyricsfile);
+		// LyricsFileReader lyricsFileReader = LyricsInfoIO
+		// .getLyricsFileReader(lyricsfile);
+		// LyricsInfo lyricsIfno = lyricsFileReader.readFile(lyricsfile);
 		//
 		// Map<String, Object> tags = lyricsIfno.getLyricsTags();
 		// for (Map.Entry<String, Object> entry : tags.entrySet()) {
@@ -35,12 +35,12 @@ public class Test {
 		// System.out.println(lyricsLineInfo.getLineLyrics());
 		// }
 
-//		 lyricsIfno.getLyricsTags().put(LyricsTag.TAG_BY, "zhangliangming");
-//		 LyricsFileWriter lyricsFileWriter = LyricsInfoIO
-//		 .getLyricsFileWriter("haplayer/lyrics/HELLO(王杰).hrc");
-//		//
-//		 lyricsFileWriter.writer(lyricsIfno,
-//		 "haplayer/lyrics/HELLO(王杰).hrc");
+		// lyricsIfno.getLyricsTags().put(LyricsTag.TAG_BY, "zhangliangming");
+		// LyricsFileWriter lyricsFileWriter = LyricsInfoIO
+		// .getLyricsFileWriter("haplayer/lyrics/HELLO(王杰).hrc");
+		// //
+		// lyricsFileWriter.writer(lyricsIfno,
+		// "haplayer/lyrics/HELLO(王杰).hrc");
 
 		// System.out.println(ZipUtil.compress(lyricsFileWriter.parseLyricsInfo(lyricsIfno)));
 	}
