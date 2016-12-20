@@ -2,6 +2,7 @@ package com.happy.lyrics.system;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.happy.lyrics.LyricsFileReader;
 import com.happy.lyrics.LyricsFileWriter;
@@ -22,13 +23,26 @@ public class LyricsInfoIO {
 
 	static {
 		readers = new ArrayList<LyricsFileReader>();
-		readers.add(new KscLyricsFileReader());
 		readers.add(new HrcLyricsFileReader());
+		readers.add(new KscLyricsFileReader());
 
 		//
 		writers = new ArrayList<LyricsFileWriter>();
-		writers.add(new KscLyricsFileWriter());
 		writers.add(new HrcLyricsFileWriter());
+		writers.add(new KscLyricsFileWriter());
+	}
+
+	/**
+	 * 获取支持的歌词文件格式
+	 * 
+	 * @return
+	 */
+	public static List<String> getSupportLyricsExts() {
+		List<String> lrcExts = new ArrayList<String>();
+		for (LyricsFileReader lyricsFileReader : readers) {
+			lrcExts.add(lyricsFileReader.getSupportFileExt());
+		}
+		return lrcExts;
 	}
 
 	/**
