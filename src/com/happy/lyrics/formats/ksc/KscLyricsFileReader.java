@@ -64,6 +64,7 @@ public class KscLyricsFileReader extends LyricsFileReader {
 	@Override
 	public LyricsInfo readInputStream(InputStream in) throws Exception {
 		LyricsInfo lyricsIfno = new LyricsInfo();
+		lyricsIfno.setLyricsFileExt(getSupportFileExt());
 		if (in != null) {
 			BufferedReader br = new BufferedReader(new InputStreamReader(in,
 					getDefaultCharset()));

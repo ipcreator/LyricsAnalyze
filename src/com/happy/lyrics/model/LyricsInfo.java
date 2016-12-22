@@ -11,6 +11,10 @@ import java.util.TreeMap;
  */
 public class LyricsInfo {
 	/**
+	 * 歌词格式
+	 */
+	private String lyricsFileExt;
+	/**
 	 * 所有的歌词行数据
 	 */
 	private TreeMap<Integer, LyricsLineInfo> lyricsLineInfos;
@@ -34,6 +38,14 @@ public class LyricsInfo {
 	public void setLyricsLineInfos(
 			TreeMap<Integer, LyricsLineInfo> lyricsLineInfos) {
 		this.lyricsLineInfos = lyricsLineInfos;
+	}
+
+	public String getLyricsFileExt() {
+		return lyricsFileExt;
+	}
+
+	public void setLyricsFileExt(String lyricsFileExt) {
+		this.lyricsFileExt = lyricsFileExt;
 	}
 
 }

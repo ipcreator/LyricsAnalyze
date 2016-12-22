@@ -66,6 +66,7 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 	@Override
 	public LyricsInfo readInputStream(InputStream in) throws Exception {
 		LyricsInfo lyricsIfno = new LyricsInfo();
+		lyricsIfno.setLyricsFileExt(getSupportFileExt());
 		if (in != null) {
 			// 获取歌词文件里面的所有内容，并对文本内容进行解压
 			String lyricsTextStr = StringCompress.decompress(toByteArray(in),
