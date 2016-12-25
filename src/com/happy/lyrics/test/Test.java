@@ -14,19 +14,19 @@ import com.happy.lyrics.system.LyricsInfoIO;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		File lyricsfile = new File("haplayer/lyrics/HELLO(王杰).hrc");
+		File lyricsfile = new File("haplayer/lyrics/蔡健雅 - Beautiful Love.ksc");
 		// File lyricsfile = new
 		// File("haplayer/lyrics/蔡健雅 - Beautiful Love2.hrc");
 		// File lyricsfile = new File("haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
 
-		// LyricsFileReader lyricsFileReader = LyricsInfoIO
-		// .getLyricsFileReader(lyricsfile);
-		// LyricsInfo lyricsIfno = lyricsFileReader.readFile(lyricsfile);
-		//
-		// Map<String, Object> tags = lyricsIfno.getLyricsTags();
-		// for (Map.Entry<String, Object> entry : tags.entrySet()) {
-		// System.out.println(entry.getKey() + "=" + entry.getValue());
-		// }
+		 LyricsFileReader lyricsFileReader = LyricsInfoIO
+		 .getLyricsFileReader(lyricsfile);
+		 LyricsInfo lyricsIfno = lyricsFileReader.readFile(lyricsfile);
+		
+		 Map<String, Object> tags = lyricsIfno.getLyricsTags();
+		 for (Map.Entry<String, Object> entry : tags.entrySet()) {
+		 System.out.println(entry.getKey() + "=" + entry.getValue());
+		 }
 		// //
 		// TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = lyricsIfno
 		// .getLyricsLineInfos();
