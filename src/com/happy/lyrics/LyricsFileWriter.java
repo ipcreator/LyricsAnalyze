@@ -14,7 +14,7 @@ public abstract class LyricsFileWriter {
 	/**
 	 * 默认编码
 	 */
-	protected static Charset defaultCharset = Charset.forName("iso8859-1");
+	protected Charset defaultCharset = Charset.forName("iso8859-1");
 
 	/**
 	 * 支持文件格式
@@ -43,11 +43,11 @@ public abstract class LyricsFileWriter {
 	public abstract boolean writer(LyricsInfo lyricsIfno, String lyricsFilePath)
 			throws Exception;
 
-	public static void setDefaultCharset(Charset charset) {
+	public void setDefaultCharset(Charset charset) {
 		defaultCharset = charset;
 	}
 
-	public static Charset getDefaultCharset() {
+	public Charset getDefaultCharset() {
 		return defaultCharset;
 	}
 }

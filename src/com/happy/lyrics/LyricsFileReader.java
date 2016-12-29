@@ -16,7 +16,7 @@ public abstract class LyricsFileReader {
 	/**
 	 * 默认编码
 	 */
-	protected static Charset defaultCharset = Charset.forName("iso8859-1");
+	protected Charset defaultCharset = Charset.forName("iso8859-1");
 
 	/**
 	 * 读取歌词文件
@@ -50,11 +50,11 @@ public abstract class LyricsFileReader {
 	 */
 	public abstract String getSupportFileExt();
 
-	public static void setDefaultCharset(Charset charset) {
+	public void setDefaultCharset(Charset charset) {
 		defaultCharset = charset;
 	}
 
-	public static Charset getDefaultCharset() {
+	public Charset getDefaultCharset() {
 		return defaultCharset;
 	}
 }
