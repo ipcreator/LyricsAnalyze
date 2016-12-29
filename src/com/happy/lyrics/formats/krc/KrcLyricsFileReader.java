@@ -127,18 +127,18 @@ public class KrcLyricsFileReader extends LyricsFileReader {
 		LyricsLineInfo lyricsLineInfo = null;
 		if (lineInfo.startsWith(LEGAL_SONGNAME_PREFIX)) {
 			int startIndex = LEGAL_SONGNAME_PREFIX.length();
-			int endIndex = lineInfo.length() - 2;
+			int endIndex = lineInfo.lastIndexOf("]");
 			//
 			lyricsTags.put(LyricsTag.TAG_SONGNAME,
 					lineInfo.substring(startIndex, endIndex));
 		} else if (lineInfo.startsWith(LEGAL_SINGERNAME_PREFIX)) {
 			int startIndex = LEGAL_SINGERNAME_PREFIX.length();
-			int endIndex = lineInfo.length() - 2;
+			int endIndex = lineInfo.lastIndexOf("]");
 			lyricsTags.put(LyricsTag.TAG_SINGER,
 					lineInfo.substring(startIndex, endIndex));
 		} else if (lineInfo.startsWith(LEGAL_OFFSET_PREFIX)) {
 			int startIndex = LEGAL_OFFSET_PREFIX.length();
-			int endIndex = lineInfo.length() - 2;
+			int endIndex = lineInfo.lastIndexOf("]");
 			lyricsTags.put(LyricsTag.TAG_OFFSET,
 					lineInfo.substring(startIndex, endIndex));
 		} else if (lineInfo.startsWith(LEGAL_BY_PREFIX)
@@ -149,8 +149,8 @@ public class KrcLyricsFileReader extends LyricsFileReader {
 				|| lineInfo.startsWith(LEGAL_LANGUAGE_PREFIX)
 				|| lineInfo.startsWith(LEGAL_AL_PREFIX)) {
 
-			int startIndex = 1;
-			int endIndex = lineInfo.length() - 2;
+			int startIndex = lineInfo.indexOf("[") + 1;
+			int endIndex = lineInfo.lastIndexOf("]");
 			String temp[] = lineInfo.substring(startIndex, endIndex).split(":");
 			lyricsTags.put(temp[0], temp.length == 1 ? "" : temp[1]);
 

@@ -14,7 +14,7 @@ import com.happy.lyrics.system.LyricsInfoIO;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		File lyricsfile = new File("haplayer/lyrics/庄心妍 - 一万个舍不得 - FLAC.hrc");
+		File lyricsfile = new File("haplayer/lyrics/李健 - 美若黎明2.krc");
 		// File lyricsfile = new
 		// File("haplayer/lyrics/蔡健雅 - Beautiful Love2.hrc");
 		// File lyricsfile = new File("haplayer/lyrics/姚贝娜 - 可以不可以.hrc");
@@ -36,6 +36,7 @@ public class Test {
 		 }
 //
 //		 lyricsIfno.getLyricsTags().put(LyricsTag.TAG_BY, "zhangliangming");
+//		 lyricsIfno.getLyricsTags().put(LyricsTag.TAG_OFFSET, "10000");
 //		 LyricsFileWriter lyricsFileWriter = LyricsInfoIO
 //		 .getLyricsFileWriter("haplayer/lyrics/李健 - 美若黎明2.krc");
 //		 //
