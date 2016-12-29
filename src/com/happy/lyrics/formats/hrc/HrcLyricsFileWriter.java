@@ -16,6 +16,7 @@ import com.happy.lyrics.model.LyricsInfo;
 import com.happy.lyrics.model.LyricsLineInfo;
 import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.CharUtils;
+import com.happy.lyrics.utils.StringCompressUtils;
 
 /**
  * hrc歌词保存器
@@ -196,7 +197,7 @@ public class HrcLyricsFileWriter extends LyricsFileWriter {
 					lyricsFile.getParentFile().mkdirs();
 				}
 				// 对字符串运行压缩
-				byte[] content = StringCompress.compress(
+				byte[] content = StringCompressUtils.compress(
 						parseLyricsInfo(lyricsIfno), getDefaultCharset());
 				// 生成歌词文件
 				FileOutputStream os = new FileOutputStream(lyricsFile);

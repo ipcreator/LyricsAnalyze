@@ -1,4 +1,4 @@
-package com.happy.lyrics.formats.hrc;
+package com.happy.lyrics.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +15,7 @@ import java.util.zip.InflaterInputStream;
  * @author zhangliangming
  * 
  */
-public class StringCompress {
+public class StringCompressUtils {
 
 	/**
 	 * 压缩
@@ -34,6 +34,18 @@ public class StringCompress {
 			throw new AssertionError(e);
 		}
 		return baos.toByteArray();
+	}
+
+	/**
+	 * 
+	 * @param input
+	 * @param charset
+	 * @return
+	 * @throws IOException
+	 */
+	public static String decompress(InputStream input, Charset charset)
+			throws IOException {
+		return decompress(toByteArray(input), charset);
 	}
 
 	/**
@@ -56,5 +68,38 @@ public class StringCompress {
 		} catch (IOException e) {
 			throw new AssertionError(e);
 		}
+	}
+
+	/**
+	 * 
+	 * @param input
+	 * @return
+	 * @throws IOException
+	 */
+	private static byte[] toByteArray(InputStream input) throws IOException {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		copy(input, output);
+		return output.toByteArray();
+	}
+
+	private static int copy(InputStream input, OutputStream output)
+			throws IOException {
+		long count = copyLarge(input, output);
+		if (count > 2147483647L) {
+			return -1;
+		}
+		return (int) count;
+	}
+
+	private static long copyLarge(InputStream input, OutputStream output)
+			throws IOException {
+		byte[] buffer = new byte[4096];
+		long count = 0L;
+		int n = 0;
+		while (-1 != (n = input.read(buffer))) {
+			output.write(buffer, 0, n);
+			count += n;
+		}
+		return count;
 	}
 }

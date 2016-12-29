@@ -1,11 +1,8 @@
 package com.happy.lyrics.formats.hrc;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +17,7 @@ import com.happy.lyrics.model.LyricsInfo;
 import com.happy.lyrics.model.LyricsLineInfo;
 import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.CharUtils;
+import com.happy.lyrics.utils.StringCompressUtils;
 import com.happy.lyrics.utils.TimeUtils;
 
 /**
@@ -69,7 +67,7 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 		lyricsIfno.setLyricsFileExt(getSupportFileExt());
 		if (in != null) {
 			// 获取歌词文件里面的所有内容，并对文本内容进行解压
-			String lyricsTextStr = StringCompress.decompress(toByteArray(in),
+			String lyricsTextStr = StringCompressUtils.decompress(in,
 					getDefaultCharset());
 			// System.out.println(lyricsTextStr);
 			String[] lyricsTexts = lyricsTextStr.split("\n");
@@ -324,38 +322,6 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			}
 		}
 		return temp;
-	}
-
-	/**
-	 * 
-	 * @param input
-	 * @return
-	 * @throws IOException
-	 */
-	private byte[] toByteArray(InputStream input) throws IOException {
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		copy(input, output);
-		return output.toByteArray();
-	}
-
-	private int copy(InputStream input, OutputStream output) throws IOException {
-		long count = copyLarge(input, output);
-		if (count > 2147483647L) {
-			return -1;
-		}
-		return (int) count;
-	}
-
-	private long copyLarge(InputStream input, OutputStream output)
-			throws IOException {
-		byte[] buffer = new byte[4096];
-		long count = 0L;
-		int n = 0;
-		while (-1 != (n = input.read(buffer))) {
-			output.write(buffer, 0, n);
-			count += n;
-		}
-		return count;
 	}
 
 	@Override
