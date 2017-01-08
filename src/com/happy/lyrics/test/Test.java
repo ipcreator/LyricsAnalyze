@@ -19,6 +19,7 @@ public class Test {
 				.getLyricsFileReader(lyricsfile);
 		LyricsInfo lyricsIfno = lyricsFileReader.readFile(lyricsfile);
 
+		
 		// Map<String, Object> tags = lyricsIfno.getLyricsTags();
 		// for (Map.Entry<String, Object> entry : tags.entrySet()) {
 		// System.out.println(entry.getKey() + "=" + entry.getValue());
