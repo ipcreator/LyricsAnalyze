@@ -15,7 +15,6 @@ import com.happy.lyrics.model.LyricsInfo;
 import com.happy.lyrics.model.LyricsLineInfo;
 import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.StringCompressUtils;
-import com.happy.lyrics.utils.TimeUtils;
 
 /**
  * krcs歌词读取器
@@ -129,12 +128,12 @@ public class KrcLyricsFileReader extends LyricsFileReader {
 			int startIndex = LEGAL_SONGNAME_PREFIX.length();
 			int endIndex = lineInfo.lastIndexOf("]");
 			//
-			lyricsTags.put(LyricsTag.TAG_SONGNAME,
+			lyricsTags.put(LyricsTag.TAG_TITLE,
 					lineInfo.substring(startIndex, endIndex));
 		} else if (lineInfo.startsWith(LEGAL_SINGERNAME_PREFIX)) {
 			int startIndex = LEGAL_SINGERNAME_PREFIX.length();
 			int endIndex = lineInfo.lastIndexOf("]");
-			lyricsTags.put(LyricsTag.TAG_SINGER,
+			lyricsTags.put(LyricsTag.TAG_ARTIST,
 					lineInfo.substring(startIndex, endIndex));
 		} else if (lineInfo.startsWith(LEGAL_OFFSET_PREFIX)) {
 			int startIndex = LEGAL_OFFSET_PREFIX.length();
@@ -172,9 +171,6 @@ public class KrcLyricsFileReader extends LyricsFileReader {
 				int endTime = startTime + Integer.parseInt(lineTime[1]);
 				lyricsLineInfo.setEndTime(endTime);
 				lyricsLineInfo.setStartTime(startTime);
-				lyricsLineInfo.setEndTimeStr(TimeUtils.parseString(endTime));
-				lyricsLineInfo
-						.setStartTimeStr(TimeUtils.parseString(startTime));
 				// 获取歌词信息
 				String lineContent = lineInfo.substring(mEndIndex,
 						lineInfo.length());

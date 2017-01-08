@@ -11,12 +11,10 @@ public class LyricsLineInfo {
 	 * 歌词开始时间
 	 */
 	private int startTime = 0;
-	private String startTimeStr = null;
 	/**
 	 * 歌词结束时间
 	 */
 	private int endTime = 0;
-	private String endTimeStr = null;
 	/**
 	 * 该行歌词
 	 */
@@ -44,22 +42,6 @@ public class LyricsLineInfo {
 
 	public void setEndTime(int endTime) {
 		this.endTime = endTime;
-	}
-
-	public String getStartTimeStr() {
-		return startTimeStr;
-	}
-
-	public void setStartTimeStr(String startTimeStr) {
-		this.startTimeStr = startTimeStr;
-	}
-
-	public String getEndTimeStr() {
-		return endTimeStr;
-	}
-
-	public void setEndTimeStr(String endTimeStr) {
-		this.endTimeStr = endTimeStr;
 	}
 
 	public String getLineLyrics() {

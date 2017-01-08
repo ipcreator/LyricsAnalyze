@@ -1,4 +1,4 @@
-package com.happy.lyrics.formats.hrc;
+package com.happy.lyrics.formats.hrcx;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,58 +17,101 @@ import com.happy.lyrics.model.LyricsLineInfo;
 import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.CharUtils;
 import com.happy.lyrics.utils.StringCompressUtils;
-import com.happy.lyrics.utils.TimeUtils;
 
 /**
- * hrc歌词保存器
  * 
  * @author zhangliangming
  * 
  */
-public class HrcLyricsFileWriter extends LyricsFileWriter {
+public class HrcxLyricsFileWriter extends LyricsFileWriter {
+
 	/**
 	 * 歌曲名 字符串
 	 */
-	private final static String LEGAL_SONGNAME_PREFIX = "haplayer.songName";
+	private final static String LEGAL_TITLE_PREFIX = "[ti:";
 	/**
 	 * 歌手名 字符串
 	 */
-	private final static String LEGAL_SINGERNAME_PREFIX = "haplayer.singer";
+	private final static String LEGAL_ARTIST_PREFIX = "[ar:";
 	/**
 	 * 时间补偿值 字符串
 	 */
-	private final static String LEGAL_OFFSET_PREFIX = "haplayer.offset";
+	private final static String LEGAL_OFFSET_PREFIX = "[offset:";
 	/**
-	 * 歌词Tag
+	 * 歌曲长度
 	 */
-	public final static String LEGAL_TAG_PREFIX = "haplayer.tag";
+	private final static String LEGAL_TOTAL_PREFIX = "[total:";
+	/**
+	 * 上传者
+	 */
+	private final static String LEGAL_BY_PREFIX = "[by:";
+	/**
+	 * Tag标签
+	 */
+	private final static String LEGAL_TAG_PREFIX = "haplayer.tag[";
+
 	/**
 	 * 歌词 字符串
 	 */
 	public final static String LEGAL_LYRICS_LINE_PREFIX = "haplayer.lrc";
 
-	public HrcLyricsFileWriter() {
+	public HrcxLyricsFileWriter() {
 		// 设置编码
-		setDefaultCharset(Charset.forName("GB2312"));
+		setDefaultCharset(Charset.forName("utf-8"));
 	}
 
-	private String parseLyricsInfo(LyricsInfo lyricsIfno) throws Exception {
+	@Override
+	public boolean writer(LyricsInfo lyricsIfno, String lyricsFilePath)
+			throws Exception {
+		try {
+			File lyricsFile = new File(lyricsFilePath);
+			if (lyricsFile != null) {
+				//
+				if (!lyricsFile.getParentFile().exists()) {
+					lyricsFile.getParentFile().mkdirs();
+				}
+				// 对字符串运行压缩
+				byte[] content = StringCompressUtils.compress(
+						parseLyricsInfo(lyricsIfno), getDefaultCharset());
+				// 生成歌词文件
+				FileOutputStream os = new FileOutputStream(lyricsFile);
+				os.write(content);
+				os.close();
+
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * 解析歌词对象类转换为字符串
+	 * 
+	 * @param lyricsIfno
+	 * @return
+	 */
+	private String parseLyricsInfo(LyricsInfo lyricsIfno) {
 		String lyricsCom = "";
 		// 先保存所有的标签数据
 		Map<String, Object> tags = lyricsIfno.getLyricsTags();
 		for (Map.Entry<String, Object> entry : tags.entrySet()) {
 			Object val = entry.getValue();
 			if (entry.getKey().equals(LyricsTag.TAG_TITLE)) {
-				lyricsCom += LEGAL_SONGNAME_PREFIX;
+				lyricsCom += LEGAL_TITLE_PREFIX;
 			} else if (entry.getKey().equals(LyricsTag.TAG_ARTIST)) {
-				lyricsCom += LEGAL_SINGERNAME_PREFIX;
+				lyricsCom += LEGAL_ARTIST_PREFIX;
 			} else if (entry.getKey().equals(LyricsTag.TAG_OFFSET)) {
 				lyricsCom += LEGAL_OFFSET_PREFIX;
+			} else if (entry.getKey().equals(LyricsTag.TAG_BY)) {
+				lyricsCom += LEGAL_BY_PREFIX;
+			} else if (entry.getKey().equals(LyricsTag.TAG_TOTAL)) {
+				lyricsCom += LEGAL_TOTAL_PREFIX;
 			} else {
-				lyricsCom += LEGAL_TAG_PREFIX;
-				val = entry.getKey() + ":" + val;
+				lyricsCom += LEGAL_TAG_PREFIX + entry.getKey() + ":";
 			}
-			lyricsCom += " := '" + val + "';\n";
+			lyricsCom += val + "];\n";
 		}
 		// 每行歌词内容
 		TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = lyricsIfno
@@ -97,15 +140,14 @@ public class HrcLyricsFileWriter extends LyricsFileWriter {
 			String lyricsText = getLineLyrics(entry.getKey());
 			String timeText = "";// 时间标签内容
 			String wordsDisIntervalText = "";// 每个歌词时间
+
 			for (int i = 0; i < indexs.size(); i++) {
 				int key = indexs.get(i);
 				LyricsLineInfo lyricsLineInfo = lyricsLineInfos.get(key);
 				// 获取开始时间和结束时间
-				timeText += "<"
-						+ TimeUtils.parseString(lyricsLineInfo.getStartTime())
-						+ ",";
-				timeText += TimeUtils.parseString(lyricsLineInfo.getEndTime())
-						+ ">";
+				timeText += "<" + lyricsLineInfo.getStartTime() + ",";
+				timeText += lyricsLineInfo.getEndTime() + ">";
+
 				// 获取每个歌词的时间
 				String wordsDisIntervalTextTemp = "";
 				int wordsDisInterval[] = lyricsLineInfo.getWordsDisInterval();
@@ -113,15 +155,11 @@ public class HrcLyricsFileWriter extends LyricsFileWriter {
 					if (j == 0)
 						wordsDisIntervalTextTemp += wordsDisInterval[j] + "";
 					else
-						wordsDisIntervalTextTemp += ":" + wordsDisInterval[j]
+						wordsDisIntervalTextTemp += "," + wordsDisInterval[j]
 								+ "";
 				}
 				// 获取每个歌词时间的文本
-				if (wordsDisIntervalText.equals("")) {
-					wordsDisIntervalText += wordsDisIntervalTextTemp;
-				} else {
-					wordsDisIntervalText += "," + wordsDisIntervalTextTemp;
-				}
+				wordsDisIntervalText += "<" + wordsDisIntervalTextTemp + ">";
 			}
 			lyricsCom += timeText + "'";
 			lyricsCom += ",'" + lyricsText + "'";
@@ -191,39 +229,13 @@ public class HrcLyricsFileWriter extends LyricsFileWriter {
 	}
 
 	@Override
-	public boolean writer(LyricsInfo lyricsIfno, String lyricsFilePath)
-			throws Exception {
-		try {
-			File lyricsFile = new File(lyricsFilePath);
-			if (lyricsFile != null) {
-				//
-				if (!lyricsFile.getParentFile().exists()) {
-					lyricsFile.getParentFile().mkdirs();
-				}
-				// 对字符串运行压缩
-				byte[] content = StringCompressUtils.compress(
-						parseLyricsInfo(lyricsIfno), getDefaultCharset());
-				// 生成歌词文件
-				FileOutputStream os = new FileOutputStream(lyricsFile);
-				os.write(content);
-				os.close();
-
-			}
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
 	public boolean isFileSupported(String ext) {
-		return ext.equalsIgnoreCase("hrc");
+		return ext.equalsIgnoreCase("hrcx");
 	}
 
 	@Override
 	public String getSupportFileExt() {
-		return "hrc";
+		return "hrcx";
 	}
 
 }

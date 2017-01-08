@@ -10,17 +10,21 @@ public class LyricsTag {
 	/**
 	 * 歌曲名称
 	 */
-	public static String TAG_SONGNAME = "com.lyrics.tag.songName";
+	public static String TAG_TITLE = "lyrics.tag.title";
 	/**
 	 * 歌手
 	 */
-	public static String TAG_SINGER = "com.lyrics.tag.singer";
+	public static String TAG_ARTIST = "lyrics.tag.artist";
 	/**
 	 * 时间补偿值
 	 */
-	public static String TAG_OFFSET = "com.lyrics.tag.offset";
+	public static String TAG_OFFSET = "lyrics.tag.offset";
 	/**
 	 * 上传者
 	 */
-	public static String TAG_BY = "com.lyrics.tag.by";
+	public static String TAG_BY = "lyrics.tag.by";
+	/**
+	 * 歌词总时长
+	 */
+	public static String TAG_TOTAL = "lyrics.tag.total";
 }

@@ -17,6 +17,7 @@ import com.happy.lyrics.model.LyricsInfo;
 import com.happy.lyrics.model.LyricsLineInfo;
 import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.CharUtils;
+import com.happy.lyrics.utils.StringUtils;
 import com.happy.lyrics.utils.TimeUtils;
 
 /**
@@ -116,10 +117,10 @@ public class KscLyricsFileReader extends LyricsFileReader {
 		if (lineInfo.startsWith(LEGAL_SONGNAME_PREFIX)) {
 			String temp[] = lineInfo.split("\'");
 			//
-			lyricsTags.put(LyricsTag.TAG_SONGNAME, temp[1]);
+			lyricsTags.put(LyricsTag.TAG_TITLE, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_SINGERNAME_PREFIX)) {
 			String temp[] = lineInfo.split("\'");
-			lyricsTags.put(LyricsTag.TAG_SINGER, temp[1]);
+			lyricsTags.put(LyricsTag.TAG_ARTIST, temp[1]);
 		} else if (lineInfo.startsWith(LEGAL_OFFSET_PREFIX)) {
 			String temp[] = lineInfo.split("\'");
 			lyricsTags.put(LyricsTag.TAG_OFFSET, temp[1]);
@@ -136,13 +137,11 @@ public class KscLyricsFileReader extends LyricsFileReader {
 					.split("'\\s*,\\s*'", -1);
 			// 开始时间
 			String startTimeStr = lineComments[0];
-			lyricsLineInfo.setStartTimeStr(startTimeStr);
 			int startTime = TimeUtils.parseInteger(startTimeStr);
 			lyricsLineInfo.setStartTime(startTime);
 
 			// 结束时间
 			String endTimeStr = lineComments[1];
-			lyricsLineInfo.setEndTimeStr(endTimeStr);
 			int endTime = TimeUtils.parseInteger(endTimeStr);
 			lyricsLineInfo.setEndTime(endTime);
 
@@ -177,26 +176,11 @@ public class KscLyricsFileReader extends LyricsFileReader {
 		int wordsDisInterval[] = new int[wordsDisIntervalList.size()];
 		for (int i = 0; i < wordsDisIntervalList.size(); i++) {
 			String wordDisIntervalStr = wordsDisIntervalList.get(i);
-			if (isNumeric(wordDisIntervalStr)) {
+			if (StringUtils.isNumeric(wordDisIntervalStr)) {
 				wordsDisInterval[i] = Integer.parseInt(wordDisIntervalStr);
 			}
 		}
 		return wordsDisInterval;
-	}
-
-	/**
-	 * 判断是否是数据字符串
-	 * 
-	 * @param checkStr
-	 * @return
-	 */
-	private boolean isNumeric(String checkStr) {
-		try {
-			Integer.parseInt(checkStr);
-			return true;
-		} catch (NumberFormatException err) {
-			return false;
-		}
 	}
 
 	/**

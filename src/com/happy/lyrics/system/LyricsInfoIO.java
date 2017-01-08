@@ -8,6 +8,8 @@ import com.happy.lyrics.LyricsFileReader;
 import com.happy.lyrics.LyricsFileWriter;
 import com.happy.lyrics.formats.hrc.HrcLyricsFileReader;
 import com.happy.lyrics.formats.hrc.HrcLyricsFileWriter;
+import com.happy.lyrics.formats.hrcx.HrcxLyricsFileReader;
+import com.happy.lyrics.formats.hrcx.HrcxLyricsFileWriter;
 import com.happy.lyrics.formats.krc.KrcLyricsFileReader;
 import com.happy.lyrics.formats.krc.KrcLyricsFileWriter;
 import com.happy.lyrics.formats.ksc.KscLyricsFileReader;
@@ -25,12 +27,14 @@ public class LyricsInfoIO {
 
 	static {
 		readers = new ArrayList<LyricsFileReader>();
+		readers.add(new HrcxLyricsFileReader());
 		readers.add(new HrcLyricsFileReader());
 		readers.add(new KscLyricsFileReader());
 		readers.add(new KrcLyricsFileReader());
 
 		//
 		writers = new ArrayList<LyricsFileWriter>();
+		writers.add(new HrcxLyricsFileWriter());
 		writers.add(new HrcLyricsFileWriter());
 		writers.add(new KscLyricsFileWriter());
 		writers.add(new KrcLyricsFileWriter());

@@ -15,6 +15,7 @@ import com.happy.lyrics.model.LyricsInfo;
 import com.happy.lyrics.model.LyricsLineInfo;
 import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.CharUtils;
+import com.happy.lyrics.utils.TimeUtils;
 
 /**
  * ksc歌词保存器
@@ -56,9 +57,9 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 		Map<String, Object> tags = lyricsIfno.getLyricsTags();
 		for (Map.Entry<String, Object> entry : tags.entrySet()) {
 			Object val = entry.getValue();
-			if (entry.getKey().equals(LyricsTag.TAG_SONGNAME)) {
+			if (entry.getKey().equals(LyricsTag.TAG_TITLE)) {
 				lyricsCom += LEGAL_SONGNAME_PREFIX;
-			} else if (entry.getKey().equals(LyricsTag.TAG_SINGER)) {
+			} else if (entry.getKey().equals(LyricsTag.TAG_ARTIST)) {
 				lyricsCom += LEGAL_SINGERNAME_PREFIX;
 			} else if (entry.getKey().equals(LyricsTag.TAG_OFFSET)) {
 				lyricsCom += LEGAL_OFFSET_PREFIX;
@@ -75,8 +76,10 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 			LyricsLineInfo lyricsLineInfo = lyricsLineInfos.get(i);
 
 			lyricsCom += LEGAL_LYRICS_LINE_PREFIX + "('"
-					+ lyricsLineInfo.getStartTimeStr() + "',";// 添加开始时间
-			lyricsCom += "'" + lyricsLineInfo.getEndTimeStr() + "',";// 添加结束时间
+					+ TimeUtils.parseString(lyricsLineInfo.getStartTime())
+					+ "',";// 添加开始时间
+			lyricsCom += "'"
+					+ TimeUtils.parseString(lyricsLineInfo.getEndTime()) + "',";// 添加结束时间
 
 			// 获取歌词文本行
 			String lyricsText = getLineLyrics(lyricsLineInfo.getLineLyrics());
@@ -110,12 +113,12 @@ public class KscLyricsFileWriter extends LyricsFileWriter {
 		for (int i = 0; i < lrcComTxt.length(); i++) {
 			char c = lrcComTxt.charAt(i);
 			if (CharUtils.isChinese(c)) {
-				
+
 				if (!temp.equals("")) {
 					lrcStack.push(temp);
 					temp = "";
 				}
-				
+
 				lrcStack.push(String.valueOf(c));
 			} else if (Character.isSpaceChar(c)) {
 				if (!temp.equals("")) {

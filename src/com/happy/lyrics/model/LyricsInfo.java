@@ -1,5 +1,6 @@
 package com.happy.lyrics.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -46,6 +47,100 @@ public class LyricsInfo {
 
 	public void setLyricsFileExt(String lyricsFileExt) {
 		this.lyricsFileExt = lyricsFileExt;
+	}
+
+	public void setTitle(String title) {
+
+		if (lyricsTags != null) {
+			lyricsTags = new HashMap<String, Object>();
+		}
+		lyricsTags.put(LyricsTag.TAG_TITLE, title);
+
+	}
+
+	public String getTitle() {
+
+		String title = "";
+		if (lyricsTags != null && !lyricsTags.isEmpty()
+				&& lyricsTags.containsKey(LyricsTag.TAG_TITLE)) {
+			title = (String) lyricsTags.get(LyricsTag.TAG_TITLE);
+		}
+		return title;
+
+	}
+
+	public void setArtist(String artist) {
+		if (lyricsTags != null) {
+			lyricsTags = new HashMap<String, Object>();
+		}
+		lyricsTags.put(LyricsTag.TAG_ARTIST, artist);
+	}
+
+	public String getArtist() {
+
+		String artist = "";
+		if (lyricsTags != null && !lyricsTags.isEmpty()
+				&& lyricsTags.containsKey(LyricsTag.TAG_ARTIST)) {
+			artist = (String) lyricsTags.get(LyricsTag.TAG_ARTIST);
+		}
+		return artist;
+
+	}
+
+	public void setOffset(long offset) {
+		if (lyricsTags != null) {
+			lyricsTags = new HashMap<String, Object>();
+		}
+		lyricsTags.put(LyricsTag.TAG_OFFSET, offset);
+	}
+
+	public long getOffset() {
+
+		long offset = 0;
+		if (lyricsTags != null && !lyricsTags.isEmpty()
+				&& lyricsTags.containsKey(LyricsTag.TAG_OFFSET)) {
+			offset = Long.parseLong((String) lyricsTags
+					.get(LyricsTag.TAG_OFFSET));
+		}
+		return offset;
+
+	}
+
+	public void setBy(String by) {
+		if (lyricsTags != null) {
+			lyricsTags = new HashMap<String, Object>();
+		}
+		lyricsTags.put(LyricsTag.TAG_BY, by);
+	}
+
+	public String getBy() {
+
+		String by = "";
+		if (lyricsTags != null && !lyricsTags.isEmpty()
+				&& lyricsTags.containsKey(LyricsTag.TAG_BY)) {
+			by = (String) lyricsTags.get(LyricsTag.TAG_BY);
+		}
+		return by;
+
+	}
+
+	public void setTotal(long total) {
+		if (lyricsTags != null) {
+			lyricsTags = new HashMap<String, Object>();
+		}
+		lyricsTags.put(LyricsTag.TAG_TOTAL, total);
+	}
+
+	public long getTotal() {
+
+		long total = 0;
+		if (lyricsTags != null && !lyricsTags.isEmpty()
+				&& lyricsTags.containsKey(LyricsTag.TAG_TOTAL)) {
+			total = Long
+					.parseLong((String) lyricsTags.get(LyricsTag.TAG_TOTAL));
+		}
+		return total;
+
 	}
 
 }

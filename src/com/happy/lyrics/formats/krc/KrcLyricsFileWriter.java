@@ -48,9 +48,9 @@ public class KrcLyricsFileWriter extends LyricsFileWriter {
 		Map<String, Object> tags = lyricsIfno.getLyricsTags();
 		for (Map.Entry<String, Object> entry : tags.entrySet()) {
 			Object val = entry.getValue();
-			if (entry.getKey().equals(LyricsTag.TAG_SONGNAME)) {
+			if (entry.getKey().equals(LyricsTag.TAG_TITLE)) {
 				lyricsCom += LEGAL_SONGNAME_PREFIX;
-			} else if (entry.getKey().equals(LyricsTag.TAG_SINGER)) {
+			} else if (entry.getKey().equals(LyricsTag.TAG_ARTIST)) {
 				lyricsCom += LEGAL_SINGERNAME_PREFIX;
 			} else if (entry.getKey().equals(LyricsTag.TAG_OFFSET)) {
 				lyricsCom += LEGAL_OFFSET_PREFIX;

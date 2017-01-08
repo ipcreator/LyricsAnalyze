@@ -1,4 +1,4 @@
-package com.happy.lyrics.formats.hrc;
+package com.happy.lyrics.formats.hrcx;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,39 +19,47 @@ import com.happy.lyrics.model.LyricsTag;
 import com.happy.lyrics.utils.CharUtils;
 import com.happy.lyrics.utils.StringCompressUtils;
 import com.happy.lyrics.utils.StringUtils;
-import com.happy.lyrics.utils.TimeUtils;
 
 /**
- * hrc歌词解析器
+ * hrcx歌词解析
  * 
  * @author zhangliangming
  * 
  */
-public class HrcLyricsFileReader extends LyricsFileReader {
+public class HrcxLyricsFileReader extends LyricsFileReader {
 	/**
 	 * 歌曲名 字符串
 	 */
-	private final static String LEGAL_SONGNAME_PREFIX = "haplayer.songName";
+	private final static String LEGAL_TITLE_PREFIX = "[ti:";
 	/**
 	 * 歌手名 字符串
 	 */
-	private final static String LEGAL_SINGERNAME_PREFIX = "haplayer.singer";
+	private final static String LEGAL_ARTIST_PREFIX = "[ar:";
 	/**
 	 * 时间补偿值 字符串
 	 */
-	private final static String LEGAL_OFFSET_PREFIX = "haplayer.offset";
+	private final static String LEGAL_OFFSET_PREFIX = "[offset:";
 	/**
-	 * 歌词Tag
+	 * 歌曲长度
 	 */
-	public final static String LEGAL_TAG_PREFIX = "haplayer.tag";
+	private final static String LEGAL_TOTAL_PREFIX = "[total:";
+	/**
+	 * 上传者
+	 */
+	private final static String LEGAL_BY_PREFIX = "[by:";
+	/**
+	 * Tag标签
+	 */
+	private final static String LEGAL_TAG_PREFIX = "haplayer.tag[";
+
 	/**
 	 * 歌词 字符串
 	 */
 	public final static String LEGAL_LYRICS_LINE_PREFIX = "haplayer.lrc";
 
-	public HrcLyricsFileReader() {
+	public HrcxLyricsFileReader() {
 		// 设置编码
-		setDefaultCharset(Charset.forName("GB2312"));
+		setDefaultCharset(Charset.forName("utf-8"));
 	}
 
 	@Override
@@ -111,20 +119,50 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 	private void parserLineInfos(
 			SortedMap<Integer, LyricsLineInfo> lyricsLineInfos,
 			Map<String, Object> lyricsTags, String lineInfo) {
-		if (lineInfo.startsWith(LEGAL_SONGNAME_PREFIX)) {
-			String temp[] = lineInfo.split("\'");
-			//
-			lyricsTags.put(LyricsTag.TAG_TITLE, temp[1]);
-		} else if (lineInfo.startsWith(LEGAL_SINGERNAME_PREFIX)) {
-			String temp[] = lineInfo.split("\'");
-			lyricsTags.put(LyricsTag.TAG_ARTIST, temp[1]);
+		if (lineInfo.startsWith(LEGAL_TITLE_PREFIX)) {
+
+			int start = LEGAL_TITLE_PREFIX.length();
+			int end = lineInfo.lastIndexOf("]");
+			String tagValue = lineInfo.substring(start, end);
+			lyricsTags.put(LyricsTag.TAG_TITLE, tagValue);
+
+		} else if (lineInfo.startsWith(LEGAL_ARTIST_PREFIX)) {
+
+			int start = LEGAL_ARTIST_PREFIX.length();
+			int end = lineInfo.lastIndexOf("]");
+			String tagValue = lineInfo.substring(start, end);
+
+			lyricsTags.put(LyricsTag.TAG_ARTIST, tagValue);
+
 		} else if (lineInfo.startsWith(LEGAL_OFFSET_PREFIX)) {
-			String temp[] = lineInfo.split("\'");
-			lyricsTags.put(LyricsTag.TAG_OFFSET, temp[1]);
+
+			int start = LEGAL_OFFSET_PREFIX.length();
+			int end = lineInfo.lastIndexOf("]");
+			String tagValue = lineInfo.substring(start, end);
+			lyricsTags.put(LyricsTag.TAG_OFFSET, tagValue);
+
+		} else if (lineInfo.startsWith(LEGAL_BY_PREFIX)) {
+
+			int start = LEGAL_BY_PREFIX.length();
+			int end = lineInfo.lastIndexOf("]");
+			String tagValue = lineInfo.substring(start, end);
+			lyricsTags.put(LyricsTag.TAG_BY, tagValue);
+
+		} else if (lineInfo.startsWith(LEGAL_TOTAL_PREFIX)) {
+
+			int start = LEGAL_TOTAL_PREFIX.length();
+			int end = lineInfo.lastIndexOf("]");
+			String tagValue = lineInfo.substring(start, end);
+			lyricsTags.put(LyricsTag.TAG_TOTAL, tagValue);
+
 		} else if (lineInfo.startsWith(LEGAL_TAG_PREFIX)) {
-			// 自定义标签
-			String temp[] = lineInfo.split("\'")[1].split(":");
+
+			int start = LEGAL_TAG_PREFIX.length();
+			int end = lineInfo.lastIndexOf("]");
+			String tagValue = lineInfo.substring(start, end);
+			String temp[] = tagValue.split(":");
 			lyricsTags.put(temp[0], temp[1]);
+
 		} else if (lineInfo.startsWith(LEGAL_LYRICS_LINE_PREFIX)) {
 			int left = LEGAL_LYRICS_LINE_PREFIX.length() + 1;
 			int right = lineInfo.length();
@@ -150,7 +188,7 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 
 			// 每个歌词的时间标签
 			String wordsDisIntervalText = lineComments[2];
-			String[] wordsDisIntervalTexts = wordsDisIntervalText.split(",");
+			String[] wordsDisIntervalTexts = wordsDisIntervalText.split("><");
 
 			parserLineInfos(lyricsLineInfos, lyricsWords, lineLyrics,
 					timeTexts, wordsDisIntervalTexts);
@@ -184,10 +222,10 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 				String[] timeTextCom = timeTextStr.split(",");
 
 				String startTimeStr = timeTextCom[0];
-				int startTime = TimeUtils.parseInteger(startTimeStr);
+				int startTime = Integer.parseInt(startTimeStr);
 
 				String endTimeStr = timeTextCom[1];
-				int endTime = TimeUtils.parseInteger(endTimeStr);
+				int endTime = Integer.parseInt(endTimeStr);
 
 				lyricsLineInfo.setEndTime(endTime);
 				lyricsLineInfo.setStartTime(startTime);
@@ -210,23 +248,6 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 	/**
 	 * 获取每个歌词的时间
 	 * 
-	 * @param wordsDisIntervalList
-	 * @return
-	 */
-	private int[] getWordsDisIntervalList(List<String> wordsDisIntervalList) {
-		int wordsDisInterval[] = new int[wordsDisIntervalList.size()];
-		for (int i = 0; i < wordsDisIntervalList.size(); i++) {
-			String wordDisIntervalStr = wordsDisIntervalList.get(i);
-			if (StringUtils.isNumeric(wordDisIntervalStr)) {
-				wordsDisInterval[i] = Integer.parseInt(wordDisIntervalStr);
-			}
-		}
-		return wordsDisInterval;
-	}
-
-	/**
-	 * 获取每个歌词的时间
-	 * 
 	 * @param string
 	 * @return
 	 */
@@ -236,7 +257,7 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 		for (int i = 0; i < wordsDisIntervalString.length(); i++) {
 			char c = wordsDisIntervalString.charAt(i);
 			switch (c) {
-			case ':':
+			case ',':
 				wordsDisIntervalList.add(temp);
 				temp = "";
 				break;
@@ -252,6 +273,45 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 			wordsDisIntervalList.add(temp);
 		}
 		return wordsDisIntervalList;
+	}
+
+	/**
+	 * 获取每个歌词的时间
+	 * 
+	 * @param wordsDisIntervalList
+	 * @return
+	 */
+	private int[] getWordsDisIntervalList(List<String> wordsDisIntervalList) {
+		int wordsDisInterval[] = new int[wordsDisIntervalList.size()];
+		for (int i = 0; i < wordsDisIntervalList.size(); i++) {
+			String wordDisIntervalStr = wordsDisIntervalList.get(i);
+			if (StringUtils.isNumeric(wordDisIntervalStr)) {
+				wordsDisInterval[i] = Integer.parseInt(wordDisIntervalStr);
+			}
+		}
+		return wordsDisInterval;
+	}
+
+	/**
+	 * 获取当前行歌词，去掉中括号
+	 * 
+	 * @param lineLyricsStr
+	 * @return
+	 */
+	private String getLineLyrics(String lineLyricsStr) {
+		String temp = "";
+		for (int i = 0; i < lineLyricsStr.length(); i++) {
+			switch (lineLyricsStr.charAt(i)) {
+			case '[':
+				break;
+			case ']':
+				break;
+			default:
+				temp += String.valueOf(lineLyricsStr.charAt(i));
+				break;
+			}
+		}
+		return temp;
 	}
 
 	/**
@@ -286,36 +346,13 @@ public class HrcLyricsFileReader extends LyricsFileReader {
 		return lineLyricsList;
 	}
 
-	/**
-	 * 获取当前行歌词，去掉中括号
-	 * 
-	 * @param lineLyricsStr
-	 * @return
-	 */
-	private String getLineLyrics(String lineLyricsStr) {
-		String temp = "";
-		for (int i = 0; i < lineLyricsStr.length(); i++) {
-			switch (lineLyricsStr.charAt(i)) {
-			case '[':
-				break;
-			case ']':
-				break;
-			default:
-				temp += String.valueOf(lineLyricsStr.charAt(i));
-				break;
-			}
-		}
-		return temp;
-	}
-
 	@Override
 	public boolean isFileSupported(String ext) {
-		return ext.equalsIgnoreCase("hrc");
+		return ext.equalsIgnoreCase("hrcx");
 	}
 
 	@Override
 	public String getSupportFileExt() {
-		return "hrc";
+		return "hrcx";
 	}
-
 }
