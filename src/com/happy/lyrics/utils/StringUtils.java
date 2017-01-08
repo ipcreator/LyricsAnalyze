@@ -92,28 +92,28 @@ public class StringUtils {
 	 * @return 是否是乱码
 	 */
 	public static boolean isMessyCode(String strName) {
-		Pattern p = Pattern.compile("\\s*|t*|r*|n*");
-		Matcher m = p.matcher(strName);
-		String after = m.replaceAll("");
-		String temp = after.replaceAll("\\p{P}", "");
-		char[] ch = temp.trim().toCharArray();
-		float chLength = ch.length;
-		float count = 0;
-		for (int i = 0; i < ch.length; i++) {
-			char c = ch[i];
-			if (!Character.isLetterOrDigit(c)) {
-				if (!isChinese(c)) {
-					count = count + 1;
+		try {
+			Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");
+			Matcher m = p.matcher(strName);
+			String after = m.replaceAll("");
+			String temp = after.replaceAll("\\p{P}", "");
+			char[] ch = temp.trim().toCharArray();
+
+			int length = (ch != null) ? ch.length : 0;
+			for (int i = 0; i < length; i++) {
+				char c = ch[i];
+				if (!Character.isLetterOrDigit(c)) {
+					String str = "" + ch[i];
+					if (!str.matches("[\u4e00-\u9fa5]+")) {
+						return true;
+					}
 				}
 			}
-		}
-		float result = count / chLength;
-		if (result > 0.4) {
-			return true;
-		} else {
-			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
+		return false;
 	}
 
 	// Empty checks
