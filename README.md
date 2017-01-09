@@ -11,8 +11,9 @@
 hrc的简化和优化
 
 #添加酷狗krc歌词的解析
-#令我最意想不到的是，原来我自定义的歌词格式，和krc也有相似的地方，都是将字符串，进行了压缩处理。。。。
-- 目前只实现了krc歌词的读取
+令我最意想不到的是，原来我自定义的歌词格式，和krc也有相似的地方，都是将字符串，进行了压缩处理。。。。
+#目前实现了歌词的生成和读取。。。。。。。可用于歌词格式相互转换哦。。。。。。
+-
 - 参考帖子如下：
-- http://www.jianshu.com/p/f6e7c8b9b2a3
-- http://blog.csdn.net/qingzi635533/article/details/30231733
+# http://www.jianshu.com/p/f6e7c8b9b2a3
+# http://blog.csdn.net/qingzi635533/article/details/30231733
