@@ -17,3 +17,6 @@ hrc的简化和优化
 - 参考帖子如下：
 # http://www.jianshu.com/p/f6e7c8b9b2a3
 # http://blog.csdn.net/qingzi635533/article/details/30231733
+
+# 博客地址
+http://zhangliangming.github.io/
